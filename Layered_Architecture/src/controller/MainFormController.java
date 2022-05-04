@@ -45,7 +45,8 @@ public class MainFormController {
     /**
      * Initializes the controller class.
      */
-    public void initialize(URL url, ResourceBundle rb) {
+    //update initialize method
+    public void initialize() {
         FadeTransition fadeIn = new FadeTransition(Duration.millis(2000), root);
         fadeIn.setFromValue(0.0);
         fadeIn.setToValue(1.0);
@@ -64,6 +65,8 @@ public class MainFormController {
             icon.setEffect(null);
             lblMenu.setText("Welcome");
             lblDescription.setText("Please select one of above main operations to proceed");
+
+
         }
     }
 
