@@ -12,9 +12,15 @@ import java.util.ArrayList;
  **/
 
 public class CustomerDAOImpl implements CrudDAO <CustomerDTO,String> {
+
     @Override
     public ArrayList<CustomerDTO> getAll() throws SQLException, ClassNotFoundException {
-        return null;
+        ResultSet result = SQLUtil.executeQuery("SELECT * FROM Customer");
+        ArrayList<CustomerDTO> allCustomers = new ArrayList<>();
+        while (result.next()) {
+            allCustomers.add(new CustomerDTO(result.getString(1),  result.getString(2), result.getString(3)));
+        }
+        return allCustomers;
     }
 
     @Override

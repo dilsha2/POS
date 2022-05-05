@@ -3,6 +3,7 @@ package dao;
 import model.CustomerDTO;
 import model.ItemDTO;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,7 +15,17 @@ import java.util.ArrayList;
 public class ItemDAOImpl implements CrudDAO <ItemDTO,String> {
     @Override
     public ArrayList<ItemDTO> getAll() throws SQLException, ClassNotFoundException {
-        return null;
+        ResultSet resultSet = SQLUtil.executeQuery("SELECT * FROM Item");
+
+        ArrayList<ItemDTO>allItems=new ArrayList<>();
+        while (resultSet.next()){
+            String code = resultSet.getString(1);
+            String description = resultSet.getString(2);
+            BigDecimal price = resultSet.getBigDecimal(3);
+            int qtyOnHand = resultSet.getInt(4);
+            allItems.add(new ItemDTO(code,description,price,qtyOnHand));
+        }
+        return allItems;
     }
 
     @Override
