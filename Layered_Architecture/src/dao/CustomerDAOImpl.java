@@ -34,6 +34,15 @@ public class CustomerDAOImpl implements CrudDAO <CustomerDTO,String> {
     }
 
     @Override
+    public CustomerDTO search(String id) throws SQLException, ClassNotFoundException {
+        ResultSet rst = SQLUtil.executeQuery("SELECT * FROM Customer WHERE id=?", id);
+        if (rst.next()) {
+            return new CustomerDTO(rst.getString(1), rst.getString(2), rst.getString(3));
+        }
+        return null;
+    }
+
+    @Override
     public boolean exist(String s) throws SQLException, ClassNotFoundException {
         return false;
     }
