@@ -2,7 +2,7 @@ package controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import dao.CustomerDAO;
+import dao.CrudDAO;
 import dao.CustomerDAOImpl;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -41,7 +41,7 @@ public class ManageCustomersFormController {
     public TableView<CustomerTM> tblCustomers;
     public JFXButton btnAddNewCustomer;
     //Property Injection (DI)
-    private final CustomerDAO customerDAO = new CustomerDAOImpl();
+    private final CrudDAO customerDAO = new CustomerDAOImpl();
 
     public void initialize() {
         tblCustomers.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -76,7 +76,7 @@ public class ManageCustomersFormController {
         try {
 
             //Loos Coupling
-            ArrayList<CustomerDTO> allCustomers = customerDAO.getAllCustomers();
+            ArrayList<CustomerDTO> allCustomers = customerDAO.getAll();
 
 
             for (CustomerDTO customer : allCustomers) {
@@ -153,12 +153,14 @@ public class ManageCustomersFormController {
                 }
 
                 //Loos Coupling
-                customerDAO.saveCustomer(new CustomerDTO(id, name, address));
+//                customerDAO.save(new CustomerDTO(id, name, address));
+                customerDAO.save("");
 
                 tblCustomers.getItems().add(new CustomerTM(id, name, address));
             } catch (SQLException e) {
                 new Alert(Alert.AlertType.ERROR, "Failed to save the customer " + e.getMessage()).show();
                 e.printStackTrace();
+
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -173,7 +175,7 @@ public class ManageCustomersFormController {
 
                 //Customer update
                 //Loos Coupling
-                customerDAO.updateCustomer(new CustomerDTO(id, name, address));
+                customerDAO.update(new CustomerDTO(id, name, address));
 
 
             } catch (SQLException e) {
@@ -193,7 +195,7 @@ public class ManageCustomersFormController {
 
 
     boolean existCustomer(String id) throws SQLException, ClassNotFoundException {
-        return customerDAO.existCustomer(id);
+        return customerDAO.exist(id);
     }
 
 
@@ -206,7 +208,7 @@ public class ManageCustomersFormController {
             }
 
             //Loos Coupling
-            customerDAO.deleteCustomer(id);
+            customerDAO.delete(id);
 
             tblCustomers.getItems().remove(tblCustomers.getSelectionModel().getSelectedItem());
             tblCustomers.getSelectionModel().clearSelection();
@@ -247,5 +249,4 @@ public class ManageCustomersFormController {
         Collections.sort(tempCustomersList);
         return tempCustomersList.get(tempCustomersList.size() - 1).getId();
     }
-
 }
